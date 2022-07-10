@@ -1,3 +1,6 @@
+import { application } from "express";
+import { authRouter } from "./routes/authRouter";
+
 export const preparePagination = (page, limit) => {
     page = Number(page);
     limit = Number(limit);
@@ -11,3 +14,6 @@ export const preparePagination = (page, limit) => {
 export const getTotalPages = (totalRecords, limit) => {
     return Math.ceil(totalRecords/limit);
 }
+
+// Connect router to express
+application.use('/api/v1/auth', authRouter);
