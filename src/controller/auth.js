@@ -63,5 +63,27 @@ const login = async (req, res) => {
         const {email, password} = req.body;
 
         // Get the user details from redis
+        const user = await redisClient.hgetall(`user:${email}`);
+
+        if (!user.email || ! validaPassword) {
+            return res.status(401).send({
+                error: true,
+                message: 'Invalid email or password',
+            });
+        }
+
+        // Generate a token for the user to perform other operations
+
+        const token = await generateToken({ userKey: `user:${email}`, userId: user.id})
+
+        return res.status(200).send({
+            error: false,
+            message: 'Login successfully',
+            data: { token },
+        });
+    } catch (error) {
+        return `Server error, please try again later. ${error}`;
     }
-}
+};
+
+export { createAccount, login };
