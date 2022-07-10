@@ -32,6 +32,8 @@ const createAccount = async (req, res) => {
             `${userId}`,
             'firstName',
             `${firstName}`,
+            'lastName',
+            `${lastName}`,
             'email',
             `${email}`,
             'password',
@@ -65,7 +67,7 @@ const login = async (req, res) => {
         // Get the user details from redis
         const user = await redisClient.hgetall(`user:${email}`);
 
-        if (!user.email || ! validaPassword) {
+        if (!user.email || ! validatePassword) {
             return res.status(401).send({
                 error: true,
                 message: 'Invalid email or password',
